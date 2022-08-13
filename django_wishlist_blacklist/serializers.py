@@ -73,8 +73,7 @@ class BaseBindStateSerializer:
         super().__init__(*args, **kwargs)
         self.fields[self.BIND_FIELD_NAME] = serializers.SerializerMethodField(method_name=f"get_{self.BIND_FIELD_NAME}")
 
-        user = self._get_authenticated_user()
-        if user:
+        if user := self._get_authenticated_user():
             author = get_user_author(user)
             self._binds = list(
                 self._get_my_binds(author).values_list("target_object_id", flat=True)
